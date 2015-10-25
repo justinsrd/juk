@@ -1,0 +1,27 @@
+#previousButton{
+  font-size: 2em;
+  float: left;
+}
+
+#previousButton:hover{
+  color: cyan;
+}
+
+#nextButton{
+  font-size: 2em;
+  float: right;
+}
+
+#nextButton:hover{
+  color: cyan;
+}
+
+.media-player {
+  margin: 0 auto;
+  max-width: 560px;
+  display: none;
+}
+
+.active {
+  display: block !important;
+}

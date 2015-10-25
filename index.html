@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <title> PENIS </title>
+    <link rel="stylesheet" type="text/css" href="./main.css">
+  </head>
+  <body>
+    <div class="hidden media-player" id="scPlayer"></div>
+
+    <iframe class="hidden media-player" id="ytPlayer" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+
+    <div class="hidden media-player" id="spPlayer"></div>
+
+    <div id="previousButton">PREV</div>
+    <div id="nextButton" onClick=nextTrack()>NEXT</div>  
+
+
+    <!-- SCRIPTS N SHIZ -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>   
+    <script>
+      // Constructors
+      var Track = function(source, url) {
+        this.source = source;
+        this.url = url;
+      }
+
+      var Playlist = function(listOfTracks) {
+        this.listOfTracks = listOfTracks;
+      }
+
+      function init() {
+        // SoundCloud API Init -- LEAVE HERE
+        SC.initialize({
+          client_id: 'YOUR_CLIENT_ID'
+        });
+
+        playTrack(andosList.listOfTracks[currentTrack]);
+      }
+
+      // Sim DB
+      var t1 = new Track('sc', 'https://soundcloud.com/cleanbandit/rather-be-feat-jess-glynne');
+      var t2 = new Track('sc', 'https://soundcloud.com/fosterthepeoplemusic/pumpedupkicks');
+      var t3 = new Track('yt', 'https://www.youtube.com/watch?v=RIZdjT1472Y')
+
+      // On page load, grab PlayList
+      var andosList = new Playlist([t1, t2, t3]);
+      // On page load, set currentTrack
+      var currentTrack = 0;
+      // On page load, init API Objects
+      init();
+
+      function nextTrack() {    
+        if (currentTrack == andosList.listOfTracks.length - 1) {
+          currentTrack = 0;         
+        } else {
+          currentTrack++;
+        }
+
+        playTrack(andosList.listOfTracks[currentTrack]);
+        // DB set currentTrack to counter
+      };
+
+      function playTrack(track) {   
+        var source = track.source;
+        var url = track.url;
+
+        var activePlayer = $('.active');
+
+        if (activePlayer.attr('id') === 'scPlayer') {
+          console.log('sc fuck');
+          activePlayer.html('');
+        } else if (activePlayer.attr('id') === 'ytPlayer') {
+          console.log('yt fuck');
+          activePlayer.attr('src', '');
+        }
+
+        activePlayer.removeClass('active');
+
+        if (source === 'sc') {
+          playSoundCloud(url);
+        } else if (source === 'yt') {
+          playYoutube(url);
+        } else if (source === "sy") {
+          alert("cry");
+        }
+      };
+
+      function playSoundCloud(url) {
+        $('#scPlayer').addClass('active');
+        SC.oEmbed(url, { auto_play: true }).then(function(oEmbed) {     
+          $('#scPlayer').html(oEmbed.html);
+        });
+      }
+
+      function playYoutube(url) {
+        $('#ytPlayer').addClass('active');
+        //parse url
+        var newSource = url.replace('/watch?v=' , '/embed/');
+        newSource += '?autoplay=1'
+        $('#ytPlayer').attr('src', newSource);
+      }    
+ 
+    </script>
+
+
+  </body>
+</html>
+
