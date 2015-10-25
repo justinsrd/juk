@@ -10,7 +10,7 @@
 
     <div class="hidden media-player" id="spPlayer"></div>
 
-    <div id="previousButton">PREV</div>
+    <div id="previousButton" onClick=previousTrack()>PREV</div>
     <div id="nextButton" onClick=nextTrack()>NEXT</div>  
 
 
@@ -52,6 +52,17 @@
       // On page load, init API Objects
       init();
 
+      function previousTrack() {
+        if (currentTrack == 0) {
+          currentTrack = andosList.listOfTracks.length - 1;         
+        } else {
+          currentTrack--;
+        }
+
+        playTrack(andosList.listOfTracks[currentTrack]);
+        // DB set currentTrack to counter
+      };
+
       function nextTrack() {
         if (currentTrack == andosList.listOfTracks.length - 1) {
           currentTrack = 0;         
@@ -92,8 +103,12 @@
 
       function playSoundCloud(url) {
         $('#scPlayer').addClass('active');
-        SC.oEmbed(url, { auto_play: true }).then(function(oEmbed) {     
-          $('#scPlayer').html(oEmbed.html);
+        SC.oEmbed(url, { auto_play: true, show_comments: false }).then(function(oEmbed) {
+          // Assign ID to iframe for easy widget linkage
+          var html = oEmbed.html;
+          var newHtml = html.slice(0,8) + "id='scIframe' " + html.slice(8); 
+
+          $('#scPlayer').html(newHtml);          
         });
       }
 
