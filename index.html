@@ -1,12 +1,12 @@
 <html>
   <head>
     <title> PENIS </title>
-    <link rel="stylesheet" type="text/css" href="./main.css">
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
   </head>
   <body>
     <div class="hidden media-player" id="scPlayer"></div>
 
-    <iframe class="hidden media-player" id="ytPlayer" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+    <div class="hidden media-player" id="ytPlayer"></div>
 
     <div class="hidden media-player" id="spPlayer"></div>
 
@@ -16,7 +16,9 @@
 
     <!-- SCRIPTS N SHIZ -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>   
+    <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+    <script src="http://www.youtube.com/player_api"></script>
+
     <script>
       // Constructors
       var Track = function(source, url) {
@@ -67,11 +69,13 @@
         var activePlayer = $('.active');
 
         if (activePlayer.attr('id') === 'scPlayer') {
-          console.log('sc fuck');
           activePlayer.html('');
         } else if (activePlayer.attr('id') === 'ytPlayer') {
-          console.log('yt fuck');
-          activePlayer.attr('src', '');
+          if (ytPlayer) {
+            ytPlayer.videoId = '';
+            ytPlayer.stopVideo();
+          }
+          
         }
 
         activePlayer.removeClass('active');
@@ -94,12 +98,37 @@
 
       function playYoutube(url) {
         $('#ytPlayer').addClass('active');
-        //parse url
-        var newSource = url.replace('/watch?v=' , '/embed/');
-        newSource += '?autoplay=1'
-        $('#ytPlayer').attr('src', newSource);
-      }    
- 
+        ytPlayer.videoId = 'CevxZvSJLk8'; //katy perry
+        ytPlayer.playVideo();
+      }
+
+      /***********************************/
+      // create youtube player
+      var ytPlayer;
+      function onYouTubePlayerAPIReady() {
+        ytPlayer = new YT.Player('ytPlayer', {
+          height: '390',
+          width: '640',
+          videoId: 'CevxZvSJLk8',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      // autoplay video
+      function onPlayerReady(event) {
+        //event.target.playVideo();
+      }
+
+      // when video ends
+      function onPlayerStateChange(event) {        
+        if(event.data === 0) {            
+          alert('done');
+        }
+      }
+      /***********************************/
     </script>
 
 
