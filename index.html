@@ -20,6 +20,7 @@
     <script src="http://www.youtube.com/player_api"></script>
 
     <script>
+    var ytPlayer;
       // Constructors
       var Track = function(source, url) {
         this.source = source;
@@ -51,7 +52,7 @@
       // On page load, init API Objects
       init();
 
-      function nextTrack() {    
+      function nextTrack() {
         if (currentTrack == andosList.listOfTracks.length - 1) {
           currentTrack = 0;         
         } else {
@@ -98,18 +99,21 @@
 
       function playYoutube(url) {
         $('#ytPlayer').addClass('active');
-        ytPlayer.videoId = 'CevxZvSJLk8'; //katy perry
+        url = url.split('');
+        url = url.splice(url.indexOf('=')+1);
+        url = url.join('');
+        ytPlayer.loadVideoById(url);
         ytPlayer.playVideo();
       }
 
       /***********************************/
       // create youtube player
-      var ytPlayer;
+      
       function onYouTubePlayerAPIReady() {
         ytPlayer = new YT.Player('ytPlayer', {
           height: '390',
           width: '640',
-          videoId: 'CevxZvSJLk8',
+          videoId: '',
           events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
