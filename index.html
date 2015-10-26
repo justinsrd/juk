@@ -1,155 +1,23 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <title> PENIS </title>
+    <title>pen15</title>
     <link rel="stylesheet" type="text/css" href="./css/main.css">
   </head>
   <body>
-    <div class="hidden media-player" id="scPlayer"></div>
 
-    <div class="hidden media-player" id="ytPlayer"></div>
-
-    <div class="hidden media-player" id="spPlayer"></div>
+    <div class="media-player" id="scPlayer"></div>
+    <div class="media-player" id="ytPlayer"></div>
+    <div class="media-player" id="spPlayer"></div>
 
     <div id="previousButton" onClick=previousTrack()>PREV</div>
     <div id="nextButton" onClick=nextTrack()>NEXT</div>  
 
-
-    <!-- SCRIPTS N SHIZ -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script src="http://www.youtube.com/player_api"></script>
-
-    <script>
-    var ytPlayer;
-      // Constructors
-      var Track = function(source, url) {
-        this.source = source;
-        this.url = url;
-      }
-
-      var Playlist = function(listOfTracks) {
-        this.listOfTracks = listOfTracks;
-      }
-
-      function init() {
-        // SoundCloud API Init -- LEAVE HERE
-        SC.initialize({
-          client_id: 'YOUR_CLIENT_ID'
-        });
-
-        playTrack(andosList.listOfTracks[currentTrack]);
-      }
-
-      // Sim DB
-      var t1 = new Track('sc', 'https://soundcloud.com/cleanbandit/rather-be-feat-jess-glynne');
-      var t2 = new Track('sc', 'https://soundcloud.com/fosterthepeoplemusic/pumpedupkicks');
-      var t3 = new Track('yt', 'https://www.youtube.com/watch?v=RIZdjT1472Y')
-
-      // On page load, grab PlayList
-      var andosList = new Playlist([t1, t2, t3]);
-      // On page load, set currentTrack
-      var currentTrack = 0;
-      // On page load, init API Objects
-      init();
-
-      function previousTrack() {
-        if (currentTrack == 0) {
-          currentTrack = andosList.listOfTracks.length - 1;         
-        } else {
-          currentTrack--;
-        }
-
-        playTrack(andosList.listOfTracks[currentTrack]);
-        // DB set currentTrack to counter
-      };
-
-      function nextTrack() {
-        if (currentTrack == andosList.listOfTracks.length - 1) {
-          currentTrack = 0;         
-        } else {
-          currentTrack++;
-        }
-
-        playTrack(andosList.listOfTracks[currentTrack]);
-        // DB set currentTrack to counter
-      };
-
-      function playTrack(track) {   
-        var source = track.source;
-        var url = track.url;
-
-        var activePlayer = $('.active');
-
-        if (activePlayer.attr('id') === 'scPlayer') {
-          activePlayer.html('');
-        } else if (activePlayer.attr('id') === 'ytPlayer') {
-          if (ytPlayer) {
-            ytPlayer.videoId = '';
-            ytPlayer.stopVideo();
-          }
-          
-        }
-
-        activePlayer.removeClass('active');
-
-        if (source === 'sc') {
-          playSoundCloud(url);
-        } else if (source === 'yt') {
-          playYoutube(url);
-        } else if (source === "sy") {
-          alert("cry");
-        }
-      };
-
-      function playSoundCloud(url) {
-        $('#scPlayer').addClass('active');
-        SC.oEmbed(url, { auto_play: true, show_comments: false }).then(function(oEmbed) {
-          // Assign ID to iframe for easy widget linkage
-          var html = oEmbed.html;
-          var newHtml = html.slice(0,8) + "id='scIframe' " + html.slice(8); 
-
-          $('#scPlayer').html(newHtml);          
-        });
-      }
-
-      function playYoutube(url) {
-        $('#ytPlayer').addClass('active');
-        url = url.split('');
-        url = url.splice(url.indexOf('=')+1);
-        url = url.join('');
-        ytPlayer.loadVideoById(url);
-        ytPlayer.playVideo();
-      }
-
-      /***********************************/
-      // create youtube player
-      
-      function onYouTubePlayerAPIReady() {
-        ytPlayer = new YT.Player('ytPlayer', {
-          height: '390',
-          width: '640',
-          videoId: '',
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          }
-        });
-      }
-
-      // autoplay video
-      function onPlayerReady(event) {
-        //event.target.playVideo();
-      }
-
-      // when video ends
-      function onPlayerStateChange(event) {        
-        if(event.data === 0) {            
-          alert('done');
-        }
-      }
-      /***********************************/
-    </script>
-
+    <script src="./js/app.js"></script>
 
   </body>
 </html>
