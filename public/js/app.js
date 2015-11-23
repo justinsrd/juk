@@ -133,3 +133,34 @@ function onPlayerStateChange(event) {
 }
 
 /***********************************/
+
+// TEMP BACKEND STUFF
+function register() {
+  var userToBeRegistered = {
+    username: 'ando',
+    password: 'andopw'
+  };
+  $.ajax({
+    type: 'POST',
+    url: '/api/register',
+    data: userToBeRegistered,
+    success: function(data) {
+      console.log(data);
+    }
+  });
+}
+
+function addRoom() {
+  var roomToBeSaved = {
+    hostName: 'ando',
+    roomName: 'ando\'s dummy room'    
+  };
+  $.ajax({
+    type: 'POST',
+    url: '/api/rooms',
+    data: roomToBeSaved,
+    success: function(data) {
+      console.log(data);
+    }
+  });
+}
